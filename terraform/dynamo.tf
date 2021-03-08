@@ -1,23 +1,23 @@
-resource "aws_dynamodb_table" "todo_table" {
+resource "aws_dynamodb_table" "feat_table" {
   name           = var.dynamo_table_name
-  billing_mode   = "PAY_PER_REQUEST"
+  billing_mode   = "PROVISIONED"
   read_capacity  = 20
   write_capacity = 20
-  hash_key       = "Id"
-  range_key      = "DateModified"
+  hash_key       = "PK"
+  range_key      = "SK"
 
   attribute {
-    name = "Id"
+    name = "PK"
     type = "S"
   }
 
   attribute {
-    name = "DateModified"
+    name = "SK"
     type = "S"
   }
 
   tags = {
     Name        = "${var.app_name}-dynamodb"
-    Environment = "staging"
+    Environment = var.environment
   }
 }
