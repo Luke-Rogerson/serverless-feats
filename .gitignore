@@ -216,3 +216,7 @@ override.tf.json
 # Ignore CLI configuration files
 .terraformrc
 terraform.rc
+
+example
+
+src/constants.py
