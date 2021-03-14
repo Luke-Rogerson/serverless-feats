@@ -1,14 +1,14 @@
 import sys
 import boto3
 
-from typing import List, cast
+from typing import List, Optional, cast
 from dataclasses import dataclass
 from boto3_type_annotations.dynamodb import ServiceResource, Table
 
-import constants
+from src.constants import TABLE_NAME
 
 ddb: ServiceResource = boto3.resource("dynamodb")
-table = cast(Table, ddb.Table(constants.TABLE_NAME))
+table = cast(Table, ddb.Table(TABLE_NAME))
 
 # Closest I can find to a TypeScript interface
 @dataclass
@@ -19,10 +19,11 @@ class User:
     interests: List[str]
     following: int
     followers: int
+    feats: Optional[List[str]]
 
 def create_user(username: str, email: str, based_in: str, interests: List[str]) -> None:
     pk = "USER#{}".format(username)
-    sk = "METADATA#{}".format(username)
+    sk = "#METADATA#{}".format(username)
 
     try:
         table.put_item(
@@ -41,7 +42,7 @@ def create_user(username: str, email: str, based_in: str, interests: List[str]) 
         print(f"Could not create user: {e}")
         sys.exit(1)
 
-    print(f"Successfully created user {username}")
+    print(f"Successfully created user \"{username}\"")
 
 def get_user(username: str) -> User:
     pk = "USER#{}".format(username)
@@ -57,11 +58,14 @@ def get_user(username: str) -> User:
 
     return user
 
-# create_user(
-#     username="bob",
-#     email="bob@aol.com",
-#     based_in="UK",
-#     interests=["eating", "drinking", "partying"],
-# )
+if __name__ == "__main__":
+    create_user(
+        username="luke",
+        email="luke@aol.com",
+        based_in="USA",
+        interests=["eating", "drinking", "partying"],
+    )
 
-# get_user('luke')
+
+
+
