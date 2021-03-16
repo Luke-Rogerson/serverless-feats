@@ -220,3 +220,5 @@ terraform.rc
 example
 
 src/constants.py
+
+*.zip
