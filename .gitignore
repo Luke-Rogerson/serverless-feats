@@ -218,7 +218,10 @@ terraform.rc
 
 example
 
-app/constants.py
+constants.py
 
 *.zip
 response.json
+app/lambda/constants.py
+.DS_Store
+boto3_type_annotations*/

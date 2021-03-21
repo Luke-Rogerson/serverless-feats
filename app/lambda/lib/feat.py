@@ -5,8 +5,8 @@ from typing import cast
 from boto3_type_annotations.dynamodb import ServiceResource, Table
 from datetime import datetime
 
-from src.constants import TABLE_NAME
-from src.dynamo.user import User
+from constants import TABLE_NAME
+from lib.user import User
 
 ddb: ServiceResource = boto3.resource("dynamodb")
 table = cast(Table, ddb.Table(TABLE_NAME))
@@ -54,10 +54,3 @@ def get_user_and_feats(username: str) -> User:
     user['feats'] = [item['feat'] for item in res['Items'][1:]]
 
     return user
-
-
-if __name__ == "__main__":
-  # create_feat(username="luke", feat="Ate ice cream")
-  user = get_user_and_feats(username="luke")
-  for feat in user['feats']:
-    print(feat)

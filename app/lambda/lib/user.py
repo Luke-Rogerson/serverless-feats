@@ -1,14 +1,14 @@
 import sys
 import boto3
 
-from typing import List, Optional
+from typing import List, Optional, cast
 from dataclasses import dataclass
-# from boto3_type_annotations.dynamodb import ServiceResource, Table
+from boto3_type_annotations.dynamodb import ServiceResource, Table
 
-TABLE_NAME='Feats'
+from constants import TABLE_NAME
 
-ddb = boto3.resource("dynamodb")
-table = ddb.Table(TABLE_NAME)
+ddb: ServiceResource = boto3.resource("dynamodb")
+table = cast(Table, ddb.Table(TABLE_NAME))
 
 # Closest I can find to a TypeScript interface
 @dataclass
@@ -57,7 +57,3 @@ def get_user(username: str) -> User:
     user: User = res['Item']
 
     return user
-
-
-
-
