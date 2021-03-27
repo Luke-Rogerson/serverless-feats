@@ -224,4 +224,9 @@ constants.py
 response.json
 app/lambda/constants.py
 .DS_Store
+
+# Need to figure out a better way to handle Lambda deps
 boto3_type_annotations*/
+aws_lambda_types*/
+typing_extensions*/
+app/lambda/typing_extensions.py

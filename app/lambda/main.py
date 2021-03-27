@@ -1,31 +1,47 @@
-from typing import Any, List
-from lib import user
+import json
+from typing import TypedDict, List
+# from lib import user
 
-from typing import TypedDict
-
+from aws_lambda_types.api_gw import (
+    APIGWPayloadV1RequestContextDict,
+    APIGWPayloadV1RequestDict,
+    APIGWPayloadV2ResponseDict,
+)
 class CreateUser(TypedDict):
-      username: str
-      email: str
-      interests: List[str]
-      based_in: str
+    username: str
+    email: str
+    interests: List[str]
+    based_in: str
 
-def lambda_handler(event: CreateUser, context: Any):
+def lambda_handler(
+    event: APIGWPayloadV1RequestDict, context: APIGWPayloadV1RequestContextDict
+) -> APIGWPayloadV2ResponseDict:
+    
+    path = event["requestContext"]["path"]
+    return switch(path=path)
 
-    username = event['username']
-    email = event['email']
-    interests = event['interests']
-    based_in = event['based_in']
 
-    res = user.create_user(username=username, email=email, interests=interests, based_in=based_in)
-
-    return { 
-          "statusCode": 200,
-          "body": res,
+def switch(path: str):
+    if path == "createuser":
+        return {
+            "statusCode": 200,
+            "headers": {
+                'Content-Type': 'application/json',
+            },
+            "body": json.dumps({"path": "createuser"}),
+        }
+    elif path == "createfeat":
+        return {
+            "statusCode": 200,
+            "headers": {
+                'Content-Type': 'application/json',
+            },
+            "body": json.dumps({"path": "createfeat"}),
+        }
+    return {
+        "statusCode": 200,
+        "headers": {
+            'Content-Type': 'application/json',
+        },
+        "body": json.dumps({"path": "default"}),
     }
-
-
-# aws lambda invoke \
-#     --function-name my_func \
-#                 --cli-binary-format raw-in-base64-out \
-#                 --payload '{ "username": "bob", "email": "bob@cool.com", "interests": ["flying"], "based_in": "Chicago" }' \
-#     response.json
