@@ -49,5 +49,5 @@ resource "aws_api_gateway_deployment" "feats" {
    ]
 
    rest_api_id = aws_api_gateway_rest_api.feats.id
-   stage_name  = "test"
+   stage_name  = "dev"
 }

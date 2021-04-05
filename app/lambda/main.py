@@ -1,11 +1,11 @@
 import json
-from typing import TypedDict, List
+from typing import Any, Dict, Optional, TypedDict, List, Union, cast
 # from lib import user
 
 from aws_lambda_types.api_gw import (
     APIGWPayloadV1RequestContextDict,
     APIGWPayloadV1RequestDict,
-    APIGWPayloadV2ResponseDict,
+    APIGWPayloadV1ResponseDict,
 )
 class CreateUser(TypedDict):
     username: str
@@ -15,33 +15,25 @@ class CreateUser(TypedDict):
 
 def lambda_handler(
     event: APIGWPayloadV1RequestDict, context: APIGWPayloadV1RequestContextDict
-) -> APIGWPayloadV2ResponseDict:
+) -> APIGWPayloadV1ResponseDict:
     
-    path = event["requestContext"]["path"]
-    return switch(path=path)
+    # remove prepended "dev"
+    path = event["requestContext"]["path"][4:]
+    return cast(APIGWPayloadV1ResponseDict, switch(path=path, event=event))
 
-
-def switch(path: str):
-    if path == "createuser":
-        return {
-            "statusCode": 200,
-            "headers": {
-                'Content-Type': 'application/json',
-            },
-            "body": json.dumps({"path": "createuser"}),
-        }
-    elif path == "createfeat":
-        return {
-            "statusCode": 200,
-            "headers": {
-                'Content-Type': 'application/json',
-            },
-            "body": json.dumps({"path": "createfeat"}),
-        }
+def construct_success_response(body: Union[Dict[str, Any], APIGWPayloadV1RequestDict], status_code: Optional[int] = 200):
     return {
-        "statusCode": 200,
+        "statusCode": status_code,
         "headers": {
             'Content-Type': 'application/json',
         },
-        "body": json.dumps({"path": "default"}),
-    }
+        "body": json.dumps(body),
+    }   
+
+
+def switch(path: str, event: APIGWPayloadV1RequestDict):
+    if path == "/createuser":
+        return construct_success_response(body={"path": "createuser"})
+    elif path == "/createfeat":
+        return construct_success_response(body={"path": "createfeat"})
+    return construct_success_response(body=event)
