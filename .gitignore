@@ -230,3 +230,4 @@ boto3_type_annotations*/
 aws_lambda_types*/
 typing_extensions*/
 app/lambda/typing_extensions.py
+deps
