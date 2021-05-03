@@ -1,2 +1,8 @@
-boto3-type-annotations==0.3.1
-aws-lambda-types==0.2.1
+click==7.1.2
+Flask==1.1.2
+itsdangerous==1.1.0
+Jinja2==2.11.3
+MarkupSafe==1.1.1
+serverless-wsgi==1.7.7
+typing-extensions==3.10.0.0
+Werkzeug==1.0.1
