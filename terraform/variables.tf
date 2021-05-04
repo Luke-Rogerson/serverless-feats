@@ -1,5 +1,9 @@
 variable "app_name" {
-    type = string
+  type = string
+}
+
+variable "cognito_domain" {
+  type = string
 }
 
 variable "dynamo_table_name" {
