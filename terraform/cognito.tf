@@ -47,12 +47,13 @@ resource "aws_cognito_user_pool" "pool" {
 }
 
 resource "aws_cognito_user_pool_client" "client" {
-  name                 = "client"
-  user_pool_id         = aws_cognito_user_pool.pool.id
-  allowed_oauth_flows  = ["code", "implicit"]
-  allowed_oauth_scopes = ["openid", "email"]
-  callback_urls        = ["https://${var.cognito_domain}/callback"]
-  logout_urls          = ["https://${var.cognito_domain}/signout"]
+  name                         = "client"
+  user_pool_id                 = aws_cognito_user_pool.pool.id
+  allowed_oauth_flows          = ["code", "implicit"]
+  allowed_oauth_scopes         = ["openid", "email"]
+  callback_urls                = ["https://www.example.com/callback"]
+  logout_urls                  = ["https://www.example.com/signout"]
+  supported_identity_providers = ["COGNITO"]
 }
 
 resource "aws_cognito_user_pool_domain" "serverlessfeats" {
